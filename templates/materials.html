@@ -1,0 +1,93 @@
+{% extends "parent.html" %}
+
+{% block title %}Materials{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/materials.css">
+{% endblock %}
+
+{% block page_name %}Material Editor{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <input id="url_family_id" type="hidden" value="{{ family_id }}" />
+        <input id="url_material_id" type="hidden" value="{{ material_id }}" />
+        <div class="section display">
+            <div>
+                <span>Family ID:</span>
+                <span id="family_id"></span>
+            </div>
+            <div>
+                <span>Family Name:</span>
+                <span id="family_name"></span>
+            </div>
+            <div>
+                <span>Timestamp:</span>
+                <span id="timestamp"></span>
+            </div>
+        </div>
+        <div class="section editor">
+            <div>
+                <span>Material ID:</span>
+                <span id="material_id"></span>
+            </div>
+            <br />
+            <label for="material">Material Name:
+                <input id="material_name" type="text" maxlength="200"/>
+            </label>
+            <br />
+            <label for="material">Masse Surfacique:
+                <input id="masse_surfacique" type="number" />
+            </label>
+            <br />
+            <label for="material">Masse Volumique:
+                <input id="masse_combustible" type="number" />
+            </label>
+            <br />
+            <button id="create">Create</button>
+            <button id="update">Update</button>
+            <button id="delete">Delete</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+    <div class="materials">
+        <table>
+            <caption>Materials</caption>
+            <thead>
+                <tr>
+                    <th class="timestamp">Update Time</th>
+                    <th class="material_name">Material Name</th>
+                    <th class="masse_surfacique">Masse Surfacique</th>
+                    <th class="masse_combustible">Masse Combustible</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="error">
+    </div>
+
+{% raw %}
+<script id="materials-table-template" type="text/x-handlebars-template">
+    <tbody>
+        {{#each materials}}
+        <tr data-material_id="{{material_id}}" data-material_name="{{material_name}}"
+        data-masse_surfacique={{masse_surfacique}} data-masse_combustible={{masse_combustible}}>
+            <td class="timestamp">{{formatTimestamp timestamp}}</td>
+            <td class="material_name">{{material_name}}</td>
+            <td class="content">{{masse_surfacique}}</td>
+            <td class="content">{{masse_combustible}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</script>
+{% endraw %}
+
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script src="/static/js/materials.js"></script>
+{% endblock %}

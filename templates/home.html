@@ -1,0 +1,46 @@
+{% extends "parent.html" %}
+{% block title %}Epidherm Test{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
+{% block page_name %}Client Demo{% endblock %}
+
+{% block body %}
+<div class="blog">
+    <table>
+        <caption>List of materials by family</caption>
+        <thead>
+            <tr>
+                <th>Creation/Update Timestamp</th>
+                <th>Family</th>
+                <th>Material</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="error">
+</div>
+
+<!-- Handlebars script tag entry -->
+{% raw %}
+<script id="blog-table-template" type="text/x-handlebars-template">
+    <tbody>
+        {{#each materials}}
+        <tr data-family_id="{{family.family_id}}" data-material_id="{{material_id}}">
+            <td class="timestamp">{{formatTimestamp timestamp}}</td>
+            <td class="family_name">{{family.family_name}}</td>
+            <td class="material_name">{{material_name}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</script>
+{% endraw %}
+
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script src="/static/js/home.js"></script>
+{% endblock %}

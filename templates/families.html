@@ -1,0 +1,63 @@
+{% extends "parent.html" %}
+{% block title %}Families{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/families.css">
+{% endblock %}
+
+{% block page_name %}Family Editor{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <input id="url_family_id" type="hidden" value="{{ family_id }}" />
+        <div class="section editor">
+            <div>
+                <span>Family ID:</span>
+                <span id="family_id"></span>
+            </div>
+            <label for="family_name">Family Name:
+                <input id="family_name" type="text" />
+            </label>
+            <br />
+            <button id="create">Create</button>
+            <button id="update">Update</button>
+            <button id="delete">Delete</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div class="families">
+            <table>
+                <caption>Families</caption>
+                <thead>
+                    <tr>
+                        <th>Creation/Update Timestamp</th>
+                        <th>Family Name</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="error">
+        </div>
+    </div>
+    <div class="error">
+    </div>
+
+<!-- Handlebars script tag entry -->
+{% raw %}
+<script id="families-table-template" type="text/x-handlebars-template">
+    <tbody>
+        {{#each families}}
+            <tr data-family_id="{{family_id}}" data-family_name="{{family_name}}">
+                <td class="timestamp">{{formatTimestamp timestamp}}</td>
+                <td class="name">{{family_name}} {{lname}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</script>
+{% endraw %}
+
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script src="/static/js/families.js"></script>
+{% endblock %}
