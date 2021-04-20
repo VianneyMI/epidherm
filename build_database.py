@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
+
 from config import db
-from models import Family, Material
+from models import Family, Material, User, Role, user_manager
 
 # Data to initialize database with
 from data import FAMILIES
@@ -29,5 +30,26 @@ for family in FAMILIES:
             )
         )
     db.session.add(fam)
+
+# Create 'member@example.com' user with no roles
+if not User.query.filter(User.email == 'member@example.com').first():
+    user = User(
+        email='member@example.com',
+        email_confirmed_at=datetime.datetime.utcnow(),
+        password=user_manager.hash_password('Password1'),
+    )
+    db.session.add(user)
+
+
+# Create 'admin@example.com' user with 'Admin' and 'Agent' roles
+if not User.query.filter(User.email == 'admin@example.com').first():
+    user = User(
+        email='admin@example.com',
+        email_confirmed_at=datetime.datetime.utcnow(),
+        password=user_manager.hash_password('Password1'),
+    )
+    user.roles.append(Role(name='Admin'))
+    user.roles.append(Role(name='Agent'))
+    db.session.add(user)
 
 db.session.commit()

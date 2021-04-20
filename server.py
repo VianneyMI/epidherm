@@ -6,6 +6,8 @@ Main module of the server file
 from flask import render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_user import current_user, login_required, roles_required
+
 
 # Local modules
 import config
@@ -24,7 +26,7 @@ connex_app.add_api("swagger.yml")
 limiter = Limiter(
     config.app,
     key_func=get_remote_address,
-    default_limits=["10 per day", "1 per hour"]
+    default_limits=["100 per day", "20 per hour"]
 )
 
 # Create a URL route in our application for "/"
@@ -41,6 +43,7 @@ def home():
 
 # Create a URL route in our application for "/families"
 @connex_app.route("/families")
+@login_required    # User must be authenticated
 @connex_app.route("/families/<int:family_id>")
 @limiter.limit(limiter._default_limits)
 def families(family_id=""):
@@ -57,6 +60,7 @@ def families(family_id=""):
 @connex_app.route("/families/<int:family_id>")
 @connex_app.route("/families/<int:family_id>/materials")
 @connex_app.route("/families/<int:family_id>/materials/<int:material_id>")
+@roles_required('Admin')    # Use of @roles_required decorator
 def materials(family_id, material_id=""):
     """
     This function responds to the browser URL
