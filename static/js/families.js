@@ -52,6 +52,15 @@ ns.model = (function () {
             };
             return $.ajax(ajax_options);
         },
+        calculate: function(family_id){
+            let ajax_options = {
+                type: 'GET',
+                url: `/api/families/${family_id}/calculate`,
+                accepts: 'application/json',
+                dataType: 'json'
+            };
+            return $.ajax(ajax_options);
+        },
         'delete': function (family_id) {
             let ajax_options = {
                 type: 'DELETE',
@@ -74,8 +83,10 @@ ns.view = (function () {
     let $family_id = $('#family_id'),
         $family_name = $('#family_name'),
 
+
         $create = $('#create'),
         $update = $('#update'),
+        $calculate = $('#calculate'),
         $delete = $('#delete'),
         $reset = $('#reset');
 
@@ -91,14 +102,32 @@ ns.view = (function () {
             $family_id.text(family.family_id);
             $family_name.val(family.family_name).focus();
         },
+        update_table: function(attributes){
+
+            let $row = $("[data-family_id="+$family_id.text()+"]");
+            let $nb_materials = $row.find('td.nb_materials'),
+            $min_ms = $row.find('td.min_ms'),
+            $max_ms = $row.find('td.max_ms'),
+            $min_mc = $row.find('td.min_mc'),
+            $max_mc = $row.find('td.max_mc');
+
+            $nb_materials.text(attributes.nb_materials),
+            $min_ms.text(attributes.min_ms),
+            $max_ms.text(attributes.max_ms),
+            $min_mc.text(attributes.min_mc),
+            $max_mc.text(attributes.max_mc);
+
+        },
         set_button_state: function (state) {
             if (state === NEW_MATERIAL) {
                 $create.prop('disabled', false);
                 $update.prop('disabled', true);
+                $calculate.prop('disabled', true);
                 $delete.prop('disabled', true);
             } else if (state === EXISTING_MATERIAL) {
                 $create.prop('disabled', true);
                 $update.prop('disabled', false);
+                $calculate.prop('disabled', false);
                 $delete.prop('disabled', false);
             }
         },
@@ -139,7 +168,12 @@ ns.controller = (function (m, v) {
         view = v,
         $url_family_id = $('#url_family_id'),
         $family_id = $('#family_id'),
-        $family_name = $('#family_name');
+        $family_name = $('#family_name'),
+        $nb_materials = $('#nb_materials'),
+        $min_ms = $('#min_ms'),
+        $max_ms = $('#max_ms'),
+        $min_mc = $('#min_mc'),
+        $max_mc = $('max_mc');
 
 
     // Get the data from the model after the controller is done initializing
@@ -234,6 +268,38 @@ ns.controller = (function (m, v) {
                         .fail(function(xhr, textStatus, errorThrown) {
                             error_handler(xhr, textStatus, errorThrown);
                         });
+                    view.reset();
+                    view.set_button_state(view.NEW_MATERIAL);
+                })
+                .fail(function(xhr, textStatus, errorThrown) {
+                    error_handler(xhr, textStatus, errorThrown);
+                })
+
+        } else {
+            alert('Problem with family name');
+        }
+        e.preventDefault();
+    });
+
+    $('#calculate').click(function (e) {
+        let family_id = parseInt($('#family_id').text());
+        //console.log(family_id)
+
+        e.preventDefault();
+
+        if (validate(family_name)) {
+            model.calculate(
+                family_id
+            )
+                .done(function(data) {
+                    model.read()
+                        .done(function(data) {
+                            //view.build_table(data);
+                        })
+                        .fail(function(xhr, textStatus, errorThrown) {
+                            error_handler(xhr, textStatus, errorThrown);
+                        });
+                    view.update_table(data);
                     view.reset();
                     view.set_button_state(view.NEW_MATERIAL);
                 })

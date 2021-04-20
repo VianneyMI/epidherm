@@ -4,6 +4,8 @@ Main module of the server file
 
 # 3rd party moudles
 from flask import render_template
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Local modules
 import config
@@ -11,10 +13,19 @@ import config
 
 # Get the application instance
 connex_app = config.connex_app
+print(type(config.app))
+
+
 
 # Read the swagger.yml file to configure the endpoints
 connex_app.add_api("swagger.yml")
 
+# Limiter
+limiter = Limiter(
+    config.app,
+    key_func=get_remote_address,
+    default_limits=["10 per day", "1 per hour"]
+)
 
 # Create a URL route in our application for "/"
 @connex_app.route("/")
@@ -31,6 +42,7 @@ def home():
 # Create a URL route in our application for "/families"
 @connex_app.route("/families")
 @connex_app.route("/families/<int:family_id>")
+@limiter.limit(limiter._default_limits)
 def families(family_id=""):
     """
     This function just responds to the browser URL

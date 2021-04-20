@@ -129,6 +129,52 @@ paths:
                       type: string
                       description: Create/Update timestamp of this material
 
+  /families/{family_id}/calculate:
+    get:
+      operationId: families.calculate
+      tags:
+        - Families
+      summary: Read one family
+      description: Read one family
+      parameters:
+        - name: family_id
+          in: path
+          description: Id of the family to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read family from families data operation
+          schema:
+            type: object
+            properties:
+              family_id:
+                type: string
+                description: Id of the family
+              family_name:
+                type: string
+                description: First name of the family
+              timestamp:
+                type: string
+                description: Creation/Update timestamp of the family record
+              materials:
+                type: array
+                items:
+                  properties:
+                    family_id:
+                      type: integer
+                      description: Id of family this material is associated with
+                    material_id:
+                      type: integer
+                      description: Id of this material
+                    material_name:
+                      type: string
+                      description: content of this material
+                    timestamp:
+                      type: string
+                      description: Create/Update timestamp of this material
+
+
     put:
       operationId: families.update
       tags:

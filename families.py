@@ -3,6 +3,7 @@ This is the families module and supports all the REST actions for the
 families data
 """
 
+import json
 from flask import make_response, abort
 from config import db
 from models import Family, FamilySchema, Material, MaterialSchema
@@ -203,6 +204,20 @@ def update(family_id, family):
     else:
         abort(404, f"Family not found for Id: {family_id}")
 
+def calculate(family_id):
+    nb_materials = get_nb_materials(family_id)
+    min_ms = get_min_ms(family_id)
+    max_ms = get_max_ms(family_id)
+    min_mc = get_min_mc(family_id)
+    max_mc = get_max_mc(family_id)
+
+    return ({
+        'nb_materials':nb_materials,
+        'min_ms':min_ms,
+        'max_ms':max_ms,
+        'min_mc':min_mc,
+        'max_mc':max_mc
+    })
 
 def delete(family_id):
     """
