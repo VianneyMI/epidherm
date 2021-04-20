@@ -3,8 +3,8 @@ This is the families module and supports all the REST actions for the
 families data
 """
 
-import json
 from flask import make_response, abort
+
 from config import db
 from models import Family, FamilySchema, Material, MaterialSchema
 
