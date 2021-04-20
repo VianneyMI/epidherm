@@ -1,0 +1,79 @@
+[
+    {
+        "name":"material1",
+        "family":{
+            "id":1,
+            "name":"family1"
+        },
+        "details":{
+            "masse_surfacique":10,
+            "masse_combustible":9
+        }
+    },
+
+
+    {
+        "name":"material2",
+        "family":{
+            "id":1,
+            "name":"family1"
+        },
+        "details":{
+            "masse_surfacique":13,
+            "masse_combustible":13
+        }
+    },
+
+
+    {
+        "name":"material3",
+        "family":{
+            "id":1,
+            "name":"family1"
+        },
+        "details":{
+            "masse_surfacique":8,
+            "masse_combustible":8
+        }
+    },
+
+
+    {
+        "name":"material4",
+        "family":{
+            "id":2,
+            "name":"family2"
+        },
+        "details":{
+            "masse_surfacique":11,
+            "masse_combustible":10
+        }
+    },
+
+    {
+        "name":"material5",
+        "family":{
+            "id":2,
+            "name":"family2"
+        },
+        "details":{
+            "masse_surfacique":4,
+            "masse_combustible":3
+        }
+
+    },
+
+
+    {
+        "name":"material6",
+        "family":{
+            "id":3,
+            "name":"family3"
+        },
+        "details":{
+            "masse_surfacique":10,
+            "masse_combustible":9
+        }
+    }
+
+]

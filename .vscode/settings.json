@@ -2,7 +2,7 @@
     "python.pythonPath": "C:\\Program Files\\Python37\\python.exe",
     "python.linting.pylintArgs": [
 
-        "--init-hook=import sys; sys.path.append('.')",
+        "--init-hook=import sys; sys.path.append('./web_app_demo')",
         "--generated-members", "flask_sqlalchemy",
         "--ignored-classes=scoped_session"
     ],
