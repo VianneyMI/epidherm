@@ -31,6 +31,11 @@
                     <tr>
                         <th>Creation/Update Timestamp</th>
                         <th>Family Name</th>
+                        <th>Materials Count</th>
+                        <th>Min MS</th>
+                        <th>Max MS</th>
+                        <th>Min MC</th>
+                        <th>Max MC</th>
                     </tr>
                 </thead>
             </table>
@@ -48,7 +53,12 @@
         {{#each families}}
             <tr data-family_id="{{family_id}}" data-family_name="{{family_name}}">
                 <td class="timestamp">{{formatTimestamp timestamp}}</td>
-                <td class="name">{{family_name}} {{lname}}</td>
+                <td class="name">{{family_name}}</td>
+                <td class="nb_materials">{{nb_materials}}</td>
+                <td class="min_ms">{{min_ms}}</td>
+                <td class="max_ms">{{max_ms}}</td>
+                <td class="min_mc">{{min_mc}}</td>
+                <td class="max_mc">{{max_mc}}</td>
             </tr>
         {{/each}}
     </tbody>

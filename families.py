@@ -5,7 +5,7 @@ families data
 
 from flask import make_response, abort
 from config import db
-from models import Family, FamilySchema, Material
+from models import Family, FamilySchema, Material, MaterialSchema
 
 
 def read_all():
@@ -21,6 +21,7 @@ def read_all():
     # Serialize the data for the response
     family_schema = FamilySchema(many=True)
     data = family_schema.dump(families).data
+
     return data
 
 
@@ -49,6 +50,83 @@ def read_one(family_id):
 
     # Otherwise, nope, didn't find that family
     else:
+        abort(404, f"Family not found for Id: {family_id}")
+
+
+def get_nb_materials(family_id):
+    # Build the initial query
+    family = (
+        Family.query.filter(Family.family_id == family_id)
+        .outerjoin(Material)
+        .one_or_none()
+    )
+
+    # Did we find a family?
+    if family is not None:
+
+        # Serialize the data for the response
+        #family_schema = FamilySchema()
+        #data = family_schema.dump(family).data
+        return len(family.materials)
+
+    # Otherwise, nope, didn't find that family
+    else:
+        abort(404, f"Family not found for Id: {family_id}")
+
+def get_min_ms(family_id):
+    material = (
+        Material.query.filter(Material.family_id == family_id)
+        .outerjoin(Family)
+        .order_by(Material.masse_surfacique)
+        .first()
+    )
+    if material is not None:
+
+        return material.masse_surfacique
+    else:
+
+        abort(404, f"Family not found for Id: {family_id}")
+
+def get_max_ms(family_id):
+    material = (
+        Material.query.filter(Material.family_id == family_id)
+        .outerjoin(Family)
+        .order_by(db.desc(Material.masse_surfacique))
+        .first()
+    )
+    if material is not None:
+
+        return material.masse_surfacique
+    else:
+
+        abort(404, f"Family not found for Id: {family_id}")
+
+def get_min_mc(family_id):
+    material = (
+        Material.query.filter(Material.family_id == family_id)
+        .outerjoin(Family)
+        .order_by(Material.masse_combustible)
+        .first()
+    )
+    if material is not None:
+
+        return material.masse_combustible
+    else:
+
+        abort(404, f"Family not found for Id: {family_id}")
+
+def get_max_mc(family_id):
+    material = (
+        Material.query.filter(Material.family_id == family_id)
+        .outerjoin(Family)
+        .order_by(db.desc(Material.masse_combustible))
+        .first()
+    )
+    if material is not None:
+
+        return material.masse_combustible
+    else:
+
         abort(404, f"Family not found for Id: {family_id}")
 
 

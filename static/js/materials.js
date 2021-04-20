@@ -30,15 +30,16 @@ ns.model = (function () {
             };
             return $.ajax(ajax_options);
         },
-        create: function (family_id, material) {
+        create: function (family_id, material) { //material should be an object then ...
             let ajax_options = {
                 type: 'POST',
                 url: `/api/families/${family_id}/materials`,
                 accepts: 'application/json',
                 contentType: 'application/json',
                 dataType: 'json',
-                data: JSON.stringify(material)
+                data: JSON.stringify(material) //data is material object
             };
+
             return $.ajax(ajax_options);
         },
         update: function (family_id, material) {
@@ -90,9 +91,9 @@ ns.view = (function () {
         EXISTING_MATERIAL: EXISTING_MATERIAL,
         reset: function () {
             $material_id.text('');
-            $material_name.text('');
-            $masse_surfacique.text('');
-            $masse_combustible.text('');
+            $material_name.val('');
+            $masse_surfacique.val('');
+            $masse_combustible.val('');
             $material.val('').focus();
         },
         update_editor: function (material) {
@@ -156,6 +157,9 @@ ns.controller = (function (m, v) {
         $url_family_id = $('#url_family_id'),
         $url_material_id = $('#url_material_id'),
         $material_id = $('#material_id'),
+        $material_name = $('#material_name'),
+        $masse_surfacique = $('#masse_surfacique'),
+        $masse_combustible = $('#masse_combustible'),
         $material = $('#material');
 
     // read the family data with materials
@@ -195,19 +199,28 @@ ns.controller = (function (m, v) {
     view.set_button_states(view.NEW_MATERIAL);
 
     // Validate input
-    function validate(material) {
-        return material !== "";
+    function validate(material_name, masse_surfacique, masse_combustible) {
+        return material_name !== "" && masse_surfacique!="" && masse_combustible!="";
     }
 
     // Create our event handlers
     $('#create').click(function (e) {
-        let material = $material.val();
+        let material_name = $material_name.val(),
+            masse_surfacique = parseInt($masse_surfacique.val(),10),
+            masse_combustible = parseInt($masse_combustible.val(),10);
+
+
 
         e.preventDefault();
 
-        if (validate(material)) {
-            model.create(parseInt($('#url_family_id').val()), {
-                content: material  //FIXME: Replace content by material_name
+        if (validate(material_name, masse_surfacique, masse_combustible)) {
+            console.log(masse_surfacique);
+            console.log(masse_combustible);
+            model.create(parseInt($('#url_family_id').val()),{
+                'family_id':parseInt($('#url_family_id').val()),
+                'material_name':material_name,
+                'masse_surfacique':masse_surfacique,
+                'masse_combustible':masse_combustible
             })
                 .done(function (data) {
                     model.read(parseInt($('#url_family_id').val()))
@@ -236,10 +249,12 @@ ns.controller = (function (m, v) {
 
         e.preventDefault();
 
-        if (validate(material)) {
+        if (validate(material_name, masse_surfacique, masse_combustible)) {
             model.update(family_id, {
-                material_id: material_id,
-                material: material
+                'material_id': material_id,
+                'material_name': material_name,
+                'masse_surfacique':masse_surfacique,
+                'masse_combustible':$masse_combustible
             })
                 .done(function (data) {
                     model.read(data.family.family_id)
@@ -300,9 +315,6 @@ ns.controller = (function (m, v) {
             material_name = $target.data('material_name'),
             masse_surfacique = $target.data('masse_surfacique'),
             masse_combustible = $target.data('masse_combustible');
-
-            console.log(material_name);
-            console.log(masse_surfacique);
 
         view.update_editor({
             material_id: material_id,

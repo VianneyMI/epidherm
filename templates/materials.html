@@ -41,7 +41,7 @@
                 <input id="masse_surfacique" type="number" />
             </label>
             <br />
-            <label for="material">Masse Volumique:
+            <label for="material">Masse Combustible:
                 <input id="masse_combustible" type="number" />
             </label>
             <br />
@@ -77,8 +77,8 @@
         data-masse_surfacique={{masse_surfacique}} data-masse_combustible={{masse_combustible}}>
             <td class="timestamp">{{formatTimestamp timestamp}}</td>
             <td class="material_name">{{material_name}}</td>
-            <td class="content">{{masse_surfacique}}</td>
-            <td class="content">{{masse_combustible}}</td>
+            <td class="masse_surfacique">{{masse_surfacique}}</td>
+            <td class="masse_combustible">{{masse_combustible}}</td>
         </tr>
         {{/each}}
     </tbody>
