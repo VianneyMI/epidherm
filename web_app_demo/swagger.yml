@@ -271,12 +271,12 @@ paths:
       summary: Create a material associated with a family
       description: Create a material associated with a family
       parameters:
-        - family_id: family_id
+        - name: family_id
           in: path
           description: Id of family associated with material
           type: integer
           required: True
-        - material_name: material_name
+        - name: material
           in: body
           description: Name of the material to create
           required: True
@@ -318,12 +318,12 @@ paths:
       summary: Read a particular material associated with a family
       description: Read a particular material associated with a family
       parameters:
-        - family_id: family_id
+        - name: family_id
           in: path
           description: Id of family associated with material
           type: integer
           required: True
-        - material_id: material_id
+        - name: material_id
           in: path
           description: Id of material
           type: integer
@@ -354,17 +354,17 @@ paths:
       summary: Update a material associated with a family
       description: Update a material associated with a family
       parameters:
-        - family_id: family_id
+        - name: family_id
           in: path
           description: Id the family to update
           type: integer
           required: True
-        - material_id: material_id
+        - name: material_id
           in: path
           description: Id of the material associated with a family
           type: integer
           required: True
-        - material: material
+        - name: material
           in: body
           schema:
             type: object
